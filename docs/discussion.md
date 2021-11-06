@@ -1,0 +1,9 @@
+# Algorithm Discussion
+
+The algorithm without any guesses seems to predict at about a 50-60% ratio depending on the input size. Smaller input sizes tend to bring about better accuracy because the noise affects the algorithm less in the smaller numbers. As the input size approaches infinity (5,000 in our case) the likelihood of guessing the number correct is about 50%, mainly due to the items to be guessed being a binary variable, 0 or 1. 
+
+While using guesses, the likelihood of guessing correctly approaches the guess percentage, 2/3 chance. Most do not fall below this, and smaller input sizes will go above this 66% chance because they will be persuaded by the earlier values all having a high confidence that the value chosen is whatever value the algorithm determined it was. So, for the earlier values, we see a mean value of about 70% with guesses, but a mean just barely scraping past 66.6% with 5,000 entries. I would expect that with near infinite entries this value would be perfectly sitting at 66.6%, as the algorithm's confidence will reach 50% for nearly every value (a_i / (2 * i) will almost always bring about something close to 0.5, as a binomial distribution will make it highly unlikely that the endpoints will be the chosen values). 
+
+## Can this be improved?
+
+I do think it could possibly be improved for smaller values of entries, as this algorithm has no mechanism of looking behind and infering from high confidence in previous values. If the algorithm did, it probably would be able to infer the next value with a higher confidence due to cutting down on the possibilities of the previous value. Regardless, this would have a small affect on small numbers of entries and a non-existant effect on near infinite values, as the confidence would approach 0.5 (50%) no matter what when not using guesses.
