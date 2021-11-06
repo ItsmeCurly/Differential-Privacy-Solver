@@ -8,10 +8,11 @@ from matplotlib import pyplot as plt
 
 
 class Problem:
-    """A class that defines the Problem (the list of randomized clicks for the problem 
-    itself. This will handle the release mechanism alongside generating all of the 
+    """A class that defines the Problem (the list of randomized clicks for the problem
+    itself. This will handle the release mechanism alongside generating all of the
     necessary lists (guesses, binomial distribution, etc.))
     """
+
     def __init__(self, num_entries: int) -> None:
         self.num_entries = num_entries
 
@@ -101,6 +102,7 @@ class Solver:
     """A class that facilitates "solving" the specified problem. Takes in parameters
     that define what functionality it has access to when solving the problem.
     """
+
     def __init__(
         self,
         problem: Problem,
@@ -114,7 +116,7 @@ class Solver:
 
     def solve(self):
         """Will attempt to solve the problem. The solver will iterate over the answers
-        list and generate a 1:1 list in size that contains the solver's guesses to the 
+        list and generate a 1:1 list in size that contains the solver's guesses to the
         answers.
 
         Raises:
@@ -171,21 +173,22 @@ def _compute_accuracy(actual, guesses):
 
 def benchmark(entries: int, use_guesses: bool, iters: int = 20):
     """Iterates over the problem, generating a new problem and solver for each
-    iteration to then solve. Will return the accuracy that the solver got for 
+    iteration to then solve. Will return the accuracy that the solver got for
     the problem.
 
     Args:
         entries (int): The number of entries
         use_guesses (bool): Whether the solver can use guesses
-        iters (int, optional): The iterations that the process will go through. 
+        iters (int, optional): The iterations that the process will go through.
         Defaults to 20.
     """
+
     def _benchmark():
         for _ in range(iters):
             problem = Problem(entries)
-            
+
             solver = Solver(problem, use_guesses=use_guesses)
-            
+
             guesses = solver.solve()
 
             accuracy = _compute_accuracy(problem.actual, guesses)
@@ -194,20 +197,30 @@ def benchmark(entries: int, use_guesses: bool, iters: int = 20):
 
     return list(_benchmark())
 
-def write_mean_stdev(accuracies: list[int], entries: int, use_guesses: bool, out_filename: str):
+
+def write_mean_stdev(
+    accuracies: list[int], entries: int, use_guesses: bool, out_filename: str
+):
     mean, stdev = statistics.mean(accuracies), statistics.stdev(accuracies)
-    
-    with open(out_filename, mode='a') as results_file:
+
+    with open(out_filename, mode="a") as results_file:
         results_file.write(f"{entries},{int(use_guesses)},{mean:.4f},{stdev:.4f}\n")
 
-def run_tests(*, display_graph: bool=False, iters: int=20, graph_filename: str="results.png", out_filename:str="results.csv"):
-    entries = [100, 500, 1000, 5000]
-    algorithm_type = ["logic"]
-    use_guesses = [False, True]
+
+def run_tests(
+    *,
+    display_graph: bool = False,
+    iters: int = 20,
+    graph_filename: str = "results.png",
+    out_filename: str = "results.csv",
+):
+    entries = [50, 100, 500, 1000, 2500, 5000,]
+    algorithm_type = ["logic",]
+    use_guesses = [False, True,]
 
     res = {"x": [], "y": [], "c": []}
-    
-    with open(out_filename, mode='w') as results_file:
+
+    with open(out_filename, mode="w") as results_file:
         results_file.write(f"entries,use_guesses,mean,stdev\n")
 
     fig, ax = plt.subplots()
@@ -215,9 +228,9 @@ def run_tests(*, display_graph: bool=False, iters: int=20, graph_filename: str="
         entries, algorithm_type, use_guesses
     ):
         accuracies = benchmark(entries, use_guess)
-        
+
         write_mean_stdev(accuracies, entries, use_guess, out_filename)
-        
+
         res["x"].extend([entries] * iters)
         res["y"].extend(accuracies)
 
@@ -228,10 +241,11 @@ def run_tests(*, display_graph: bool=False, iters: int=20, graph_filename: str="
     legend1 = ax.legend(
         *scatter.legend_elements(), loc="upper right", title="Using Guess"
     )
+    
     ax.add_artist(legend1)
     ax.grid()
     plt.savefig(graph_filename)
-    
+
     if display_graph:
         plt.show()
 
