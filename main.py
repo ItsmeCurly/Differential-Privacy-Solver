@@ -130,7 +130,8 @@ class Solver:
         for i, a_i in enumerate(self.problem.answers):
             if i > 0:
                 if self.algorithm_type == "logic":
-                    likelihood_clicked = a_i / (2 * i)
+                    # Thanks to Mac Creamer for helping with determing this algorithm
+                    likelihood_clicked = a_i / (2 * i) 
 
                     if self.use_guesses:
                         if (
