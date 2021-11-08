@@ -23,9 +23,6 @@ class Problem:
 
         logger.debug(f"{self.x=}\n{self.z=}\n{self.a=}")
 
-    def __len__(self):
-        return self.num_entries
-
     @property
     def x(self):
         return self._x
@@ -95,6 +92,7 @@ class Problem:
         Returns:
             int: The specified guess (w_i) at that index
         """
+        
         return self.w[i]
 
 
@@ -125,6 +123,7 @@ class Solver:
         Returns:
             list: A list of the guesses (binary between 0 or 1)
         """
+        
         guesses = []
 
         for i, a_i in enumerate(self.problem.answers):
